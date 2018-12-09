@@ -8,10 +8,10 @@ phases:
 
   build:
     commands:
-      - GOOS=linux go build -ldflags="-s -w" -o bin/alert/dynatrace alert/dynatrace
-      - GOOS=linux go build -ldflags="-s -w" -o bin/alert/lambda alert/lambda
-      - GOOS=linux go build -ldflags="-s -w" -o bin/alert/text alert/text
-      - GOOS=linux go build -ldflags="-s -w" -o bin/telegram/text telegram/text
+      - GOOS=linux go build -ldflags="-s -w" -o bin/alert/dynatrace alert/dynatrace/main.go
+      - GOOS=linux go build -ldflags="-s -w" -o bin/alert/lambda alert/lambda/main.go
+      - GOOS=linux go build -ldflags="-s -w" -o bin/alert/text alert/text/main.go
+      - GOOS=linux go build -ldflags="-s -w" -o bin/telegram/text telegram/text/main.go
 
       - sls plugin install --name serverless-domain-manager
       - sls deploy --verbose
