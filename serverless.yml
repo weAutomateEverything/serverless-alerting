@@ -61,6 +61,6 @@ plugins:
   - serverless-domain-manager
 custom:
   customDomain:
-    domainName: {ssm:domain}
+    domainName: {ssm:/domain}
     basePath: 'alerting' # This will be prefixed to all routes
     createRoute53Record: true
