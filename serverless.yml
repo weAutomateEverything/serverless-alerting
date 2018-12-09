@@ -32,30 +32,30 @@ functions:
 
   dynatraceAlert:
     handler: bin/alert/dynatrace
-      memorySize: 128
-      events:
-        - http:
-            path: /alert/dynatrace
-            method: post
+    memorySize: 128
+    events:
+      - http:
+          path: /alert/dynatrace
+          method: post
 
   lambdaAlert:
     handler: bin/alert/lambda
-      memorySize: 128
-      events:
-        - http:
-            path: /alert/lambda
-            method: post
+    memorySize: 128
+    events:
+      - http:
+          path: /alert/lambda
+          method: post
 
   telegram-text:
     handler: bin/telegram/text
-      memorySize: 128
-      events:
-        - http:
-            path: /telegram/text/{chat}
-            method: post
-            parameters:
-              paths:
-                chat: true
+    memorySize: 128
+    events:
+      - http:
+          path: /telegram/text/{chat}
+          method: post
+          parameters:
+            paths:
+              chat: true
 
 plugins:
   - serverless-domain-manager
