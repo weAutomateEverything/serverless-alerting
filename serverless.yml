@@ -11,6 +11,10 @@ provider:
       Action:
         - "ssm:GetParameter"
       Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:GetItem"
+      Resource: "*"
 
 package:
  exclude:
