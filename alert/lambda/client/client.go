@@ -1,22 +1,21 @@
 package client
 
-
 import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/weAutomateEverything/serverless-alerting/common"
 	"log"
 	"net/http"
 	"os"
 	"runtime/debug"
 )
 
-
 func LogLambdaError(err error) {
 	msg := fmt.Sprintf("ERROR: %v\n %v", os.Getenv("AWS_LAMBDA_FUNCTION_NAME"), err.Error())
 	log.Printf(msg)
 	l := LambdaError{
-		Error: err.Error(),
+		Error:  err.Error(),
 		Lambda: os.Getenv("AWS_LAMBDA_FUNCTION_NAME"),
 	}
 
@@ -25,7 +24,7 @@ func LogLambdaError(err error) {
 		panic(err)
 	}
 
-	resp, err := http.Post("%v/telegram/alert/lambda", "application/text", bytes.NewReader(b))
+	resp, err := http.Post(fmt.Sprintf("%v/telegram/alert/lambda", common.GetDomain()), "application/text", bytes.NewReader(b))
 	if err == nil {
 		resp.Body.Close()
 	} else {
