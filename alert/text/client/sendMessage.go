@@ -9,7 +9,7 @@ import (
 
 func SendMessage(chat string, message string) error{
 
-	resp, err := http.Post(fmt.Sprintf("%v/alert/text/%v",common.GetDomain(),chat),"application/text",strings.NewReader(message))
+	resp, err := http.Post(fmt.Sprintf("%v/alerting/alert/text/%v",common.GetDomain(),chat),"application/text",strings.NewReader(message))
 	if err != nil {
 		return err
 	}
