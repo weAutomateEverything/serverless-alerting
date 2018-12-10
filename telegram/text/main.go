@@ -36,7 +36,7 @@ func Handle(request events.APIGatewayProxyRequest)(response events.APIGatewayPro
 	chat := request.PathParameters["chat"]
 
 	token, err := s.GetParameter(&ssm.GetParameterInput{
-		Name:aws.String("telegram-token"),
+		Name:aws.String("telegram-key"),
 	})
 
 	if err != nil {
