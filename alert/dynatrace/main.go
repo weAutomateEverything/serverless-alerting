@@ -7,6 +7,7 @@ import (
 	"github.com/weAutomateEverything/serverless-alerting/alert/lambda/client"
 	client2 "github.com/weAutomateEverything/serverless-alerting/alert/text/client"
 	"github.com/weAutomateEverything/serverless-alerting/common"
+	"log"
 )
 
 func main(){
@@ -14,6 +15,7 @@ func main(){
 }
 
 func Handle(request events.APIGatewayProxyRequest)(response events.APIGatewayProxyResponse, err error ){
+	log.Println(request.Body)
 	var m msg
 	err = json.Unmarshal([]byte(request.Body),&m)
 	if err != nil {

@@ -12,6 +12,7 @@ import (
 	"github.com/weAutomateEverything/serverless-alerting/alert/lambda/client"
 	"github.com/weAutomateEverything/serverless-alerting/common"
 	"gopkg.in/telegram-bot-api.v4"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -57,7 +58,7 @@ func Handle(request events.APIGatewayProxyRequest)(response events.APIGatewayPro
 		client.LogLambdaError(err)
 		return common.ServerError(err)
 	}
-
+	log.Printf("Sending message %v to %v",request.Body,chatId)
 	msg := tgbotapi.NewMessage(chatId,request.Body)
 	msg.ParseMode = "Markdown"
 
