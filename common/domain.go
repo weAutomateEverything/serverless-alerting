@@ -11,7 +11,7 @@ func GetDomain() string {
 }
 
 func GetErrorGroup() string {
-	return getData("error_group")
+	return getData("error-group")
 }
 
 func getData(key string) string {
