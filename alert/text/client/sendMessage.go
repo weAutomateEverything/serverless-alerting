@@ -8,11 +8,8 @@ import (
 )
 
 func SendMessage(chat string, message string) error{
-	d, err := common.GetDomain()
-	if err != nil {
-		return err
-	}
-	resp, err := http.Post(fmt.Sprintf("%v/telegram/alert/%v",*d,chat),"application/text",strings.NewReader(message))
+
+	resp, err := http.Post(fmt.Sprintf("%v/alert/text/%v",common.GetDomain(),chat),"application/text",strings.NewReader(message))
 	if err != nil {
 		return err
 	}
@@ -22,10 +19,5 @@ func SendMessage(chat string, message string) error{
 
 
 func SendError(message string) error {
-	e, err := common.GetErrorGroup()
-	if err != nil {
-		return err
-	}
-
-	return SendMessage(*e,message)
+	return SendMessage(common.GetErrorGroup(),message)
 }

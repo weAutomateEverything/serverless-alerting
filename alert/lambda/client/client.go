@@ -24,13 +24,7 @@ func LogLambdaError(err error) {
 		panic(err)
 	}
 
-	d, err := common.GetDomain()
-	if err != nil {
-		panic(err)
-	}
-
-
-	resp, err := http.Post(fmt.Sprintf("%v/telegram/alert/lambda", *d), "application/text", bytes.NewReader(b))
+	resp, err := http.Post(fmt.Sprintf("%v/telegram/alert/lambda", common.GetDomain()), "application/text", bytes.NewReader(b))
 	if err == nil {
 		resp.Body.Close()
 	} else {

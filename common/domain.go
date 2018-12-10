@@ -6,19 +6,19 @@ import (
 	"github.com/aws/aws-sdk-go/service/ssm"
 )
 
-func GetDomain() (*string, error){
+func GetDomain() string {
 	return getData("domain")
 }
 
-func GetErrorGroup()(*string, error){
+func GetErrorGroup() string {
 	return getData("error_group")
 }
 
-func getData(key string) (*string, error){
+func getData(key string) string {
 	c := aws.NewConfig()
 	s, err  := session.NewSession(c)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	ss := ssm.New(s)
@@ -26,7 +26,7 @@ func getData(key string) (*string, error){
 		Name:aws.String(key),
 	})
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-	return out.Parameter.Value, nil
+	return *out.Parameter.Value
 }

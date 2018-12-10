@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
@@ -54,7 +55,7 @@ func Handle(request events.APIGatewayProxyRequest)(response events.APIGatewayPro
 		return common.ClientError(412)
 	}
 
-	resp, err := http.Post("%v/telegram-chat/"+*chatStr.S,"application/text",strings.NewReader(request.Body))
+	resp, err := http.Post(fmt.Sprintf("%v/alerting/telegram/text/%v",common.GetDomain(),*chatStr.S),"application/text",strings.NewReader(request.Body))
 
 	if err != nil {
 		client.LogLambdaError(err)
