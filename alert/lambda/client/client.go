@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/weAutomateEverything/go2hal/telegram"
 	"github.com/weAutomateEverything/serverless-alerting/common"
 	"log"
 	"net/http"
@@ -12,7 +13,7 @@ import (
 )
 
 func LogLambdaError(err error) {
-	msg := fmt.Sprintf("ERROR: %v\n %v", os.Getenv("AWS_LAMBDA_FUNCTION_NAME"), err.Error())
+	msg := fmt.Sprintf("ERROR: %v\n %v", telegram.Escape(os.Getenv("AWS_LAMBDA_FUNCTION_NAME")), telegram.Escape(err.Error()))
 	log.Printf(msg)
 	l := LambdaError{
 		Error:  err.Error(),

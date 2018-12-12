@@ -19,13 +19,14 @@ import (
 
 var s *ssm.SSM
 var d *dynamodb.DynamoDB
+
 func main() {
 	lambda.Start(Handle)
 }
 
-func init(){
+func init() {
 	c := aws.Config{}
-	sess,err := session.NewSession(&c)
+	sess, err := session.NewSession(&c)
 	if err != nil {
 		client.LogLambdaError(err)
 		panic(err)
@@ -44,7 +45,7 @@ func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayPr
 	}
 
 	token, err := s.GetParameter(&ssm.GetParameterInput{
-		Name:aws.String("telegram-key"),
+		Name: aws.String("telegram-key"),
 	})
 
 	if err != nil {
@@ -52,9 +53,7 @@ func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayPr
 		return common.ServerError(err)
 	}
 
-
-
-	bot,err := tgbotapi.NewBotAPI(*token.Parameter.Value)
+	bot, err := tgbotapi.NewBotAPI(*token.Parameter.Value)
 	if err != nil {
 		client.LogLambdaError(err)
 		return common.ServerError(err)
@@ -65,8 +64,13 @@ func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayPr
 			// Looks like the bot has been added to a new group - lets register the details.
 			if user.ID == bot.Self.ID {
 				chats, err := d.Scan(&dynamodb.ScanInput{
-					TableName:aws.String("hal"),
-					FilterExpression:aws.String("chat = "+strconv.FormatInt(update.Message.Chat.ID,10)),
+					TableName:        aws.String("hal"),
+					FilterExpression: aws.String("chat = :v"),
+					ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+						":v": {
+							S: aws.String(strconv.FormatInt(update.Message.Chat.ID, 10)),
+						},
+					},
 				})
 
 				if err != nil {
@@ -76,16 +80,16 @@ func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayPr
 
 				id := ""
 
-				if len(chats.Items) == 0{
-					id = strconv.FormatUint(uint64(uuid.New().ID()),10)
+				if len(chats.Items) == 0 {
+					id = strconv.FormatUint(uint64(uuid.New().ID()), 10)
 					_, err := d.PutItem(&dynamodb.PutItemInput{
-						TableName:aws.String("hal"),
+						TableName: aws.String("hal"),
 						Item: map[string]*dynamodb.AttributeValue{
 							"groupId": {
-								S:aws.String(id),
+								S: aws.String(id),
 							},
 							"chat": {
-								S:aws.String(strconv.FormatInt(update.Message.Chat.ID,10)),
+								S: aws.String(strconv.FormatInt(update.Message.Chat.ID, 10)),
 							},
 						},
 					})
@@ -97,7 +101,7 @@ func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayPr
 					id = *chats.Items[0]["groupId"].S
 				}
 
-				err = client2.SendMessage(id,fmt.Sprintf("The bot has been successfully registered. Your token is %v", id))
+				err = client2.SendMessage(id, fmt.Sprintf("The bot has been successfully registered. Your token is %v", id))
 				if err != nil {
 					client.LogLambdaError(err)
 					return common.ServerError(err)
