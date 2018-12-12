@@ -15,6 +15,15 @@ provider:
       Action:
         - "dynamodb:GetItem"
       Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:Scan"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:PutItem"
+      Resource: "*"
+
 
 package:
  exclude:

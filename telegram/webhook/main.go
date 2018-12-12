@@ -14,6 +14,7 @@ import (
 	client2 "github.com/weAutomateEverything/serverless-alerting/alert/text/client"
 	"github.com/weAutomateEverything/serverless-alerting/common"
 	"gopkg.in/telegram-bot-api.v4"
+	"log"
 	"strconv"
 )
 
@@ -37,6 +38,7 @@ func init() {
 }
 
 func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayProxyResponse, err error) {
+	log.Println(request.Body)
 	update := tgbotapi.Update{}
 	err = json.Unmarshal([]byte(request.Body), &update)
 	if err != nil {
