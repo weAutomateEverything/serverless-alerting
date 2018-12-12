@@ -60,6 +60,13 @@ functions:
           parameters:
             paths:
               chat: true
+  telegram-webhook:
+    handler: bin/telegram/webhook
+    memorySize: 128
+    events:
+      - http:
+          path: /telegram/webhook
+          method: post
 
 plugins:
   - serverless-domain-manager

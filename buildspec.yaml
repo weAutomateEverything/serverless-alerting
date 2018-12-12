@@ -12,6 +12,7 @@ phases:
       - GOOS=linux go build -ldflags="-s -w" -o bin/alert/lambda alert/lambda/main.go
       - GOOS=linux go build -ldflags="-s -w" -o bin/alert/text alert/text/main.go
       - GOOS=linux go build -ldflags="-s -w" -o bin/telegram/text telegram/text/main.go
+      - GOOS=linux go build -ldflags="-s -w" -o bin/telegram/webhook telegram/text/webhook.go
 
       - sls plugin install --name serverless-domain-manager
       - sls deploy --verbose
