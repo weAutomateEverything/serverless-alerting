@@ -1,6 +1,5 @@
 package common
 
-
 import (
 	"github.com/aws/aws-lambda-go/events"
 	"log"
@@ -13,6 +12,7 @@ func ServerError(err error) (events.APIGatewayProxyResponse, error) {
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusInternalServerError,
 		Body:       http.StatusText(http.StatusInternalServerError),
+		Headers:    GetCorsHeaders(),
 	}, nil
 }
 
@@ -21,6 +21,6 @@ func ClientError(status int) (events.APIGatewayProxyResponse, error) {
 	return events.APIGatewayProxyResponse{
 		StatusCode: status,
 		Body:       http.StatusText(status),
+		Headers:    GetCorsHeaders(),
 	}, nil
 }
-
