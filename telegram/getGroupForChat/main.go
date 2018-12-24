@@ -54,7 +54,7 @@ func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayPr
 		}
 
 		if len(out.Items) > 0 {
-			g, err := strconv.ParseInt(*out.Items[0]["groupId"].S, 1, 64)
+			g, err := strconv.ParseInt(*out.Items[0]["groupId"].S, 10, 64)
 			if err != nil {
 				client.LogLambdaError(err)
 				return common.ServerError(err)
