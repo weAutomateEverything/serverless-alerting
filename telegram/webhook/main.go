@@ -13,13 +13,19 @@ import (
 	"github.com/weAutomateEverything/serverless-alerting/alert/lambda/client"
 	client2 "github.com/weAutomateEverything/serverless-alerting/alert/text/client"
 	"github.com/weAutomateEverything/serverless-alerting/common"
+	client3 "github.com/weAutomateEverything/serverless-alerting/telegram/getGroupForChat/client"
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
 	"strconv"
+	"strings"
 )
 
 var s *ssm.SSM
 var d *dynamodb.DynamoDB
+
+type commandCtor func() Command
+
+var commandList = map[string]commandCtor{}
 
 func main() {
 	lambda.Start(Handle)
@@ -35,6 +41,13 @@ func init() {
 
 	s = ssm.New(sess)
 	d = dynamodb.New(sess)
+
+	register(newIdCommand)
+}
+
+func register(newfunc commandCtor) {
+	id := newfunc().CommandIdentifier()
+	commandList[strings.ToLower(id)] = newfunc
 }
 
 func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayProxyResponse, err error) {
@@ -111,6 +124,26 @@ func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayPr
 
 				return common.ClientError(200)
 			}
+		}
+	}
+
+	if strings.HasPrefix(update.Message.Text, "/") {
+		tokens := strings.Split(update.Message.Text, "@")
+		cmd := tokens[0][1:]
+		c, ok := commandList[cmd]
+		if !ok {
+			group, err := client3.GetGroupForChat(update.Message.Chat.ID)
+			if err != nil {
+				client.LogLambdaError(err)
+				return common.ServerError(err)
+			}
+			err = client2.SendMessage(group, fmt.Sprintf("No command found for %v", c))
+			if err != nil {
+				client.LogLambdaError(err)
+				return common.ServerError(err)
+			}
+		} else {
+			c().Execute(update)
 		}
 	}
 	return common.ClientError(200)
