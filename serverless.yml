@@ -77,7 +77,7 @@ functions:
           path: /telegram/webhook
           method: post
   telegram-getgroupforchat:
-    handler: bin/telegram/getgroupforchat
+    handler: bin/telegram/getGroupForChat
     memorySize: 128
     parameters:
       querystrings:
