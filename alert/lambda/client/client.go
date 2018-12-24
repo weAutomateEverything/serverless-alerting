@@ -27,7 +27,7 @@ func LogLambdaError(err error) {
 	}
 
 	log.Println(l)
-	resp, err := http.Post(fmt.Sprintf("%v/telegram/alert/lambda", common.GetDomain()), "application/text", bytes.NewReader(b))
+	resp, err := http.Post(fmt.Sprintf("%v/alerting/alert/lambda", common.GetDomain()), "application/text", bytes.NewReader(b))
 	if err == nil {
 		b, _ := ioutil.ReadAll(resp.Body)
 		log.Println(string(b))

@@ -13,7 +13,8 @@ import (
 )
 
 func GetGroupForChat(chat int64) (group string, err error) {
-	requeuest := fmt.Sprintf("%v/telegram/chat?groupId=%v",common.GetDomain(),chat)
+	requeuest := fmt.Sprintf("%v/alerting/telegram/chat?groupId=%v",common.GetDomain(),chat)
+	log.Println(requeuest)
 	out, err := http.Get(requeuest)
 	var resp api.GetGroupForChatResponse
 	if err != nil {
