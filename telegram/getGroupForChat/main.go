@@ -71,7 +71,7 @@ func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayPr
 
 			response.Body = string(b)
 			response.StatusCode = 200
-			return
+			return response, nil
 		}
 
 		key = out.LastEvaluatedKey
