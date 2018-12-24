@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/weAutomateEverything/go2hal/telegram"
 	"github.com/weAutomateEverything/serverless-alerting/common"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -25,9 +26,12 @@ func LogLambdaError(err error) {
 		panic(err)
 	}
 
+	log.Println(l)
 	resp, err := http.Post(fmt.Sprintf("%v/telegram/alert/lambda", common.GetDomain()), "application/text", bytes.NewReader(b))
 	if err == nil {
-		resp.Body.Close()
+		b, _ := ioutil.ReadAll(resp.Body)
+		log.Println(string(b))
+
 	} else {
 		log.Printf("HAL ERROR: %v", err.Error())
 	}

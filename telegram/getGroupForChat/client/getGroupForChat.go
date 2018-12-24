@@ -6,6 +6,7 @@ import (
 	"github.com/weAutomateEverything/serverless-alerting/alert/lambda/client"
 	"github.com/weAutomateEverything/serverless-alerting/common"
 	"github.com/weAutomateEverything/serverless-alerting/telegram/getGroupForChat/api"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -19,7 +20,13 @@ func GetGroupForChat(chat int64) (group string, err error) {
 		client.LogLambdaError(err)
 		return
 	}
-	err = json.NewDecoder(out.Body).Decode(&resp)
+	b,err := ioutil.ReadAll(out.Body)
+	if err != nil {
+		client.LogLambdaError(err)
+		return
+	}
+	log.Println(string(b))
+	err = json.Unmarshal(b,&resp)
 	if err != nil {
 		client.LogLambdaError(err)
 		return
