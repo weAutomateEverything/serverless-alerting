@@ -14,6 +14,7 @@ import (
 	client2 "github.com/weAutomateEverything/serverless-alerting/alert/text/client"
 	"github.com/weAutomateEverything/serverless-alerting/common"
 	client3 "github.com/weAutomateEverything/serverless-alerting/telegram/getGroupForChat/client"
+	"github.com/weAutomateEverything/serverless-alerting/telegram/webhook/commands"
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
 	"strconv"
@@ -23,7 +24,7 @@ import (
 var s *ssm.SSM
 var d *dynamodb.DynamoDB
 
-type commandCtor func() Command
+type commandCtor func() commands.Command
 
 var commandList = map[string]commandCtor{}
 
@@ -42,7 +43,7 @@ func init() {
 	s = ssm.New(sess)
 	d = dynamodb.New(sess)
 
-	register(newIdCommand)
+	register(commands.NewIdCommand)
 }
 
 func register(newfunc commandCtor) {

@@ -1,4 +1,4 @@
-package main
+package commands
 
 import (
 	"gopkg.in/telegram-bot-api.v4"

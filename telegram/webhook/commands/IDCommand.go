@@ -1,4 +1,4 @@
-package main
+package commands
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 type idCommand struct {
 }
 
-func newIdCommand() Command {
+func NewIdCommand() Command {
 	return &idCommand{}
 }
 
