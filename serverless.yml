@@ -76,6 +76,17 @@ functions:
       - http:
           path: /telegram/webhook
           method: post
+  telegram-getgroupforchat:
+    handler: bin/telegram/getGroupForChat
+    memorySize: 128
+    parameters:
+      querystrings:
+        groupId: true
+    events:
+      - http:
+          path: /telegram/chat
+          method: get
+
 
 plugins:
   - serverless-domain-manager

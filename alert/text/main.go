@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/weAutomateEverything/serverless-alerting/alert/lambda/client"
 	"github.com/weAutomateEverything/serverless-alerting/common"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -32,6 +33,7 @@ func init(){
 func Handle(request events.APIGatewayProxyRequest)(response events.APIGatewayProxyResponse, err error){
 	group := request.PathParameters["groupId"]
 
+	log.Printf("%v - %v",group,request.Body)
 	i, err := d.GetItem(&dynamodb.GetItemInput{
 		TableName:aws.String("hal"),
 		Key: map[string]*dynamodb.AttributeValue{
