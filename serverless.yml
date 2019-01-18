@@ -81,6 +81,6 @@ plugins:
   - serverless-domain-manager
 custom:
   customDomain:
-    domainName: api.carddevops.co.za
+    domainName: ${env:Domain}
     basePath: 'alerting' # This will be prefixed to all routes
     createRoute53Record: true

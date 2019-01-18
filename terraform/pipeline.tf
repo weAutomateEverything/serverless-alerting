@@ -238,12 +238,17 @@ resource "aws_codebuild_project" "serverless" {
   }
   "environment" {
     compute_type = "BUILD_GENERAL1_SMALL"
-    image = "954064918141.dkr.ecr.eu-west-1.amazonaws.com/gosls:latest"
+    image = "zamedic/gosls"
     type = "LINUX_CONTAINER"
+    environment_variable {
+      name = "Domain"
+      value = "${var.domain}"
+    }
   }
   "source" {
     type = "CODEPIPELINE"
   }
+
 }
 
 resource "aws_s3_bucket" "lambda" {

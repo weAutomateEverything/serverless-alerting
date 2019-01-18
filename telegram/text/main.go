@@ -62,12 +62,12 @@ func Handle(request events.APIGatewayProxyRequest)(response events.APIGatewayPro
 	msg := tgbotapi.NewMessage(chatId,request.Body)
 	msg.ParseMode = "Markdown"
 
-	r, err := bot.Send(msg)
+	_, err = bot.Send(msg)
 	if err != nil {
 		client.LogLambdaError(err)
 		return common.ServerError(err)
 	}
-
+	/*
 	t := api.TextEvent{
 		MessageID: strconv.Itoa(r.MessageID),
 		Message:request.Body,
@@ -80,6 +80,7 @@ func Handle(request events.APIGatewayProxyRequest)(response events.APIGatewayPro
 		return common.ServerError(err)
 	}
 
+
 	resp, err := http.Post("https://api.carddevops.co.za/hal/halMessageClassification","application/json",bytes.NewReader(b))
 	if err != nil {
 		client.LogLambdaError(err)
@@ -87,6 +88,7 @@ func Handle(request events.APIGatewayProxyRequest)(response events.APIGatewayPro
 	}
 
 	resp.Body.Close()
+	*/
 	return common.ClientError(200)
 }
 
