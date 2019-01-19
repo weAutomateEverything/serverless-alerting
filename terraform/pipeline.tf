@@ -22,7 +22,7 @@ EOF
 
 
 resource "aws_s3_bucket" "build" {
-  bucket = "build-${var.name}"
+  bucket = "build-${var.name}-${var.domain}"
 }
 
 resource "aws_iam_role" "codebuild" {
@@ -252,7 +252,7 @@ resource "aws_codebuild_project" "serverless" {
 }
 
 resource "aws_s3_bucket" "lambda" {
-  bucket = "lambda-${var.name}"
+  bucket = "lambda-${var.name}-${var.domain}"
   acl = "private"
 }
 
