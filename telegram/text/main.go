@@ -65,7 +65,7 @@ func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayPr
 	msg := tgbotapi.NewMessage(chatId, text)
 	msg.ParseMode = "Markdown"
 
-	_, err = bot.Send(msg)
+	r, err := bot.Send(msg)
 	if err != nil {
 		client.LogLambdaError(err)
 		return common.ServerError(err)
