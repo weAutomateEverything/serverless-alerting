@@ -244,6 +244,10 @@ resource "aws_codebuild_project" "serverless" {
       name = "Domain"
       value = "${var.domain}"
     }
+    environment_variable {
+      name = "classification_endpoint"
+      value = "${var.classification_endpoint}"
+    }
   }
   "source" {
     type = "CODEPIPELINE"

@@ -62,6 +62,8 @@ functions:
   telegram-text:
     handler: bin/telegram/text
     memorySize: 128
+    environment:
+      CLASSIFICATION_ENDPOINT: ${env:classification_endpoint}
     events:
       - http:
           path: /telegram/text/{chat}
@@ -69,6 +71,7 @@ functions:
           parameters:
             paths:
               chat: true
+
   telegram-webhook:
     handler: bin/telegram/webhook
     memorySize: 128
