@@ -16,7 +16,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"strings"
 )
 
 var s *ssm.SSM
@@ -58,11 +57,8 @@ func Handle(request events.APIGatewayProxyRequest) (response events.APIGatewayPr
 		return common.ServerError(err)
 	}
 	log.Printf("Sending message %v to %v", request.Body, chatId)
-	text := request.Body
-	text = strings.Replace(text,"_","\\_",-1)
-	text = strings.Replace(text,"*","\\*",-1)
 
-	msg := tgbotapi.NewMessage(chatId, text)
+	msg := tgbotapi.NewMessage(chatId, request.Body)
 	msg.ParseMode = "Markdown"
 
 	r, err := bot.Send(msg)

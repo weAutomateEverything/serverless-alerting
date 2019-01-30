@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/weAutomateEverything/go2hal/telegram"
 	"github.com/weAutomateEverything/serverless-alerting/alert/lambda/client"
 	client2 "github.com/weAutomateEverything/serverless-alerting/alert/text/client"
 	"github.com/weAutomateEverything/serverless-alerting/common"
@@ -23,7 +24,7 @@ func Handle(request events.APIGatewayProxyRequest)(response events.APIGatewayPro
 		return common.ServerError(err)
 	}
 
-	err = client2.SendError(m.Alert)
+	err = client2.SendError(telegram.Escape(m.Alert))
 	if err != nil {
 		client.LogLambdaError(err)
 		return common.ServerError(err)
